@@ -1,0 +1,56 @@
+.campaign { position: relative; width: 100vw; height: 100dvh; overflow: hidden; background: #050908; }
+.backdrop { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(3,7,6,.98), rgba(5,10,8,.76) 48%, rgba(3,7,6,.94)), url('/assets/background-mythical-forest.jpg') center/cover; filter: saturate(.78); }
+.topbar { position: relative; z-index: 3; height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 4vw, 64px); border-bottom: 1px solid rgba(236,217,165,.1); background: rgba(5,10,8,.72); backdrop-filter: blur(14px); }
+.logo { display: flex; align-items: center; gap: 10px; color: #d9d0bd; background: transparent; font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .14em; cursor: pointer; }
+.logo span { color: #d5b762; font-size: 1.25rem; }
+.run-stats { display: flex; gap: 8px; }
+.run-stats span { padding: 7px 10px; border: 1px solid rgba(255,255,255,.06); border-radius: 999px; color: #9eaaa3; background: rgba(0,0,0,.18); font-size: .65rem; }
+.run-stats b { color: #d7b86a; margin-right: 3px; }
+.campaign-body { position: relative; z-index: 2; height: calc(100dvh - 68px); display: grid; grid-template-columns: 240px minmax(0, 1fr) 300px; gap: clamp(20px, 3vw, 48px); padding: clamp(24px, 4vh, 44px) clamp(24px, 4vw, 64px); }
+.champion-panel, .journey { min-height: 0; border: 1px solid rgba(236,217,165,.1); border-radius: 18px; background: linear-gradient(160deg, rgba(11,18,15,.78), rgba(5,9,8,.92)); backdrop-filter: blur(10px); }
+.champion-panel { padding: 24px; align-self: center; }
+.crest { display: grid; place-items: center; width: 74px; height: 74px; margin-bottom: 18px; border: 1px solid rgba(215,184,106,.22); border-radius: 50%; color: #d7b86a; font-family: 'Cinzel', serif; font-size: 2.5rem; }
+.champion-panel > small { color: #a78e55; font-size: .6rem; letter-spacing: .14em; text-transform: uppercase; }
+.champion-panel h2 { margin-top: 4px; font-family: 'Cinzel', serif; font-size: 1.35rem; }
+.champion-panel > p { margin-top: 2px; color: #839087; font-size: .7rem; }
+.passive { margin: 20px 0; padding: 13px; border-radius: 10px; background: rgba(255,255,255,.035); }
+.passive span { color: #7c8a82; font-size: .5rem; letter-spacing: .15em; }
+.passive b { display: block; margin: 4px 0; color: #d8c27f; font-family: 'Cinzel', serif; font-size: .75rem; }
+.passive p { color: #8d9992; font-size: .62rem; line-height: 1.45; }
+.champion-panel > button { width: 100%; display: flex; justify-content: space-between; padding: 10px 12px; border-radius: 8px; background: rgba(215,184,106,.08); color: #c8baa0; border: 1px solid rgba(215,184,106,.12); cursor: pointer; font-size: .68rem; }
+.relics { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.relic { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.08); border-radius: 50%; color: #d8be70; background: rgba(0,0,0,.22); }
+.current-node { align-self: center; text-align: center; max-width: 720px; justify-self: center; }
+.chapter { color: #b29658; font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; }
+.node-icon { width: clamp(88px, 9vw, 128px); aspect-ratio: 1; display: grid; place-items: center; margin: 20px auto; border: 1px solid rgba(215,184,106,.28); border-radius: 50%; background: radial-gradient(circle, rgba(215,184,106,.11), rgba(3,7,6,.8) 68%); color: #dfc77e; font-size: clamp(2.4rem, 4vw, 4.3rem); box-shadow: 0 0 80px rgba(155,123,48,.12); }
+.node-icon[data-type="boss"] { color: #d78b78; border-color: rgba(199,91,77,.35); }
+.current-node h1 { font-family: 'Cinzel', serif; font-size: clamp(2rem, 4vw, 4.2rem); line-height: 1; font-weight: 600; }
+.subtitle { margin-top: 8px; color: #c1b89f; font-family: 'Cinzel', serif; font-size: .85rem; }
+.story { max-width: 690px; margin: 18px auto 0; color: #99a49e; font-size: clamp(.72rem, .9vw, .88rem); line-height: 1.65; }
+.enemy-preview { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+.enemy-preview div { min-width: 130px; padding: 9px 12px; border: 1px solid rgba(255,255,255,.07); border-radius: 10px; background: rgba(0,0,0,.2); }
+.enemy-preview span { color: #c99270; margin-right: 5px; }
+.enemy-preview b { font-size: .66rem; }
+.enemy-preview small { display: block; margin-top: 2px; color: #748078; font-size: .55rem; }
+.enter { margin-top: 22px; min-width: 230px; padding: 13px 17px; display: inline-flex; align-items: center; justify-content: space-between; border-radius: 8px; background: linear-gradient(135deg, #ead18e, #9f7e3d); color: #10140f; font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; cursor: pointer; }
+.journey { padding: 20px; overflow: hidden; }
+.journey > small { color: #998351; font-size: .58rem; letter-spacing: .18em; }
+.nodes { position: relative; height: calc(100% - 28px); display: flex; flex-direction: column; justify-content: space-between; padding: 12px 0 0; }
+.path { position: absolute; left: 15px; top: 20px; bottom: 20px; width: 1px; background: linear-gradient(#a5874c, rgba(255,255,255,.05)); }
+.map-node { position: relative; z-index: 2; display: grid; grid-template-columns: 32px 1fr; gap: 9px; align-items: center; opacity: .34; }
+.map-node > span { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; background: #08100d; font-size: .6rem; }
+.map-node b { display: block; color: #aeb8b2; font-size: .64rem; }
+.map-node small { display: block; color: #68746d; font-size: .52rem; }
+.map-node[data-state="done"] { opacity: .65; }
+.map-node[data-state="done"] > span { border-color: #63816b; color: #92b69b; }
+.map-node[data-state="current"] { opacity: 1; }
+.map-node[data-state="current"] > span { border-color: #d3b45f; color: #e7ca75; box-shadow: 0 0 18px rgba(211,180,95,.18); }
+.deck-modal { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 30px; background: rgba(1,4,3,.88); backdrop-filter: blur(8px); }
+.deck-modal > section { width: min(1100px, 94vw); height: min(760px, 88dvh); padding: 24px; border: 1px solid rgba(226,207,155,.15); border-radius: 18px; background: #07100e; box-shadow: 0 40px 100px rgba(0,0,0,.6); }
+.deck-modal header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.deck-modal small { color: #9d864f; letter-spacing: .16em; }
+.deck-modal h2 { font-family: 'Cinzel', serif; }
+.deck-modal header button { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.05); color: #bbb; cursor: pointer; font-size: 1.2rem; }
+.deck-grid { height: calc(100% - 62px); overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; align-content: start; padding-right: 8px; }
+@media (max-width: 1100px) { .campaign-body { grid-template-columns: 190px 1fr 230px; gap: 14px; } .journey { padding: 14px; } }
+@media (max-height: 760px) { .topbar { height: 58px; } .campaign-body { height: calc(100dvh - 58px); padding-top: 16px; padding-bottom: 16px; } .champion-panel { padding: 16px; } .crest { width: 58px; height: 58px; font-size: 2rem; margin-bottom: 12px; } .current-node .story { margin-top: 10px; line-height: 1.45; } .node-icon { margin: 10px auto; width: 82px; } .enemy-preview { margin-top: 10px; } .enter { margin-top: 12px; } }

@@ -1,0 +1,62 @@
+:host { display: block; }
+.game-card {
+  --accent: #d7b86a;
+  width: clamp(128px, 10.6vw, 172px);
+  aspect-ratio: .70;
+  position: relative;
+  display: grid;
+  grid-template-rows: 46% 1fr auto;
+  padding: 7px;
+  color: #f8f2e4;
+  border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+  border-radius: 15px;
+  background: linear-gradient(155deg, rgba(22, 27, 25, .98), rgba(5, 9, 8, .99));
+  box-shadow: 0 18px 36px rgba(0, 0, 0, .48), inset 0 0 0 1px rgba(255, 255, 255, .035);
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: transform .16s ease, border-color .16s ease, filter .16s ease;
+}
+.game-card:hover:not(.disabled) { transform: translateY(-12px) scale(1.025); border-color: var(--accent); z-index: 20; }
+.game-card.selected { transform: translateY(-18px) scale(1.045); border-color: #fff1b4; box-shadow: 0 20px 45px rgba(0,0,0,.58), 0 0 0 2px rgba(240,210,141,.24); z-index: 30; }
+.game-card.disabled { filter: grayscale(.48) brightness(.68); cursor: help; }
+.game-card.upgraded { box-shadow: 0 18px 36px rgba(0,0,0,.48), inset 0 0 20px rgba(240,210,141,.10); }
+.game-card[data-rarity="uncommon"] { --accent: #71a883; }
+.game-card[data-rarity="rare"] { --accent: #7d96d6; }
+.game-card[data-rarity="legendary"] { --accent: #b887e4; }
+.game-card[data-faction="dark-elf"] { --accent: #9270bf; }
+.game-card[data-faction="high-elf"] { --accent: #88b78d; }
+.game-card[data-faction="orc"] { --accent: #a67a50; }
+.art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 10px 10px 7px 7px;
+  border: 1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--accent) 34%, transparent), transparent 42%),
+    linear-gradient(145deg, #1a2822, #080d0b 70%);
+}
+.art::before, .art::after { content: ''; position: absolute; width: 75%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: .45; }
+.art::before { transform: rotate(35deg); }
+.art::after { transform: rotate(-35deg); }
+.sigil { font-family: 'Cinzel', serif; font-size: clamp(2rem, 3vw, 3.5rem); color: var(--accent); text-shadow: 0 0 28px color-mix(in srgb, var(--accent) 60%, transparent); z-index: 2; }
+.energy { position: absolute; z-index: 5; top: 7px; left: 7px; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #101814; border: 1px solid var(--accent); color: #ffe3a0; font-family: 'Cinzel', serif; font-weight: 700; }
+.rarity { position: absolute; z-index: 5; top: 10px; right: 10px; font-size: .55rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.72); }
+.content { padding: 8px 7px 2px; min-height: 0; }
+.content small { display: block; font-size: .54rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.content h3 { margin: 3px 0 5px; font-family: 'Cinzel', serif; font-size: clamp(.72rem, .86vw, .92rem); line-height: 1.12; }
+.content h3 span { color: #f4d77c; }
+.content p { font-size: clamp(.59rem, .68vw, .72rem); line-height: 1.28; color: #cbd3cd; }
+.footer { display: flex; justify-content: space-between; gap: 4px; padding: 5px 7px 3px; font-size: .5rem; letter-spacing: .1em; text-transform: uppercase; color: #89978f; border-top: 1px solid rgba(255,255,255,.06); }
+.game-card.compact { width: 112px; border-radius: 12px; }
+.game-card.compact .content p { font-size: .55rem; }
+.game-card.compact .rarity { display: none; }
+@media (max-height: 760px) {
+  .game-card { width: clamp(110px, 9vw, 142px); }
+  .content p { font-size: .57rem; }
+  .energy { width: 26px; height: 26px; font-size: .75rem; }
+}
+
+.disabled-reason { position:absolute; z-index:8; left:50%; top:42%; transform:translate(-50%,-50%); padding:5px 7px; border-radius:999px; color:#efe3c0; background:rgba(7,10,8,.88); border:1px solid rgba(215,184,106,.22); font-size:.46rem; font-weight:800; letter-spacing:.08em; white-space:nowrap; pointer-events:none; }

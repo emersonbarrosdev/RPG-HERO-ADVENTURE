@@ -1,0 +1,71 @@
+<main class="campaign" *ngIf="game.hero as hero">
+  <div class="backdrop"></div>
+  <header class="topbar">
+    <button class="logo" type="button" (click)="backToMenu()"><span>✧</span> ECLIPSE OF AELORIA</button>
+    <div class="run-stats">
+      <span><b>♥</b> {{ game.snapshot.hp }} / {{ game.snapshot.maxHp }}</span>
+      <span><b>◈</b> {{ game.snapshot.gold }} ouro</span>
+      <span><b>▤</b> {{ game.snapshot.deck.length }} cartas</span>
+      <span><b>✥</b> {{ game.snapshot.relicIds.length }} relíquias</span>
+    </div>
+  </header>
+
+  <section class="campaign-body" *ngIf="node as current">
+    <aside class="champion-panel">
+      <div class="crest">{{ hero.crest }}</div>
+      <small>{{ hero.race }}</small>
+      <h2>{{ hero.name }}</h2>
+      <p>{{ hero.title }}</p>
+      <div class="passive"><span>PASSIVA</span><b>{{ hero.passiveName }}</b><p>{{ hero.passiveDescription }}</p></div>
+      <button type="button" (click)="showDeck = true">Ver deck completo <span>{{ game.snapshot.deck.length }}</span></button>
+      <div class="relics" *ngIf="game.snapshot.relicIds.length">
+        <span class="relic" *ngFor="let id of game.snapshot.relicIds" [title]="game.getRelic(id)?.description">{{ game.getRelic(id)?.icon }}</span>
+      </div>
+    </aside>
+
+    <section class="current-node">
+      <div class="chapter">{{ current.act }} • {{ current.region }}</div>
+      <div class="node-icon" [attr.data-type]="current.type">
+        <span *ngIf="current.type === 'battle'">⚔</span>
+        <span *ngIf="current.type === 'elite'">♞</span>
+        <span *ngIf="current.type === 'boss'">♛</span>
+        <span *ngIf="current.type === 'event'">✦</span>
+        <span *ngIf="current.type === 'rest'">☽</span>
+      </div>
+      <h1>{{ current.title }}</h1>
+      <p class="subtitle">{{ current.subtitle }}</p>
+      <p class="story">{{ current.story }}</p>
+      <div class="enemy-preview" *ngIf="current.enemies?.length">
+        <div *ngFor="let enemy of current.enemies">
+          <span>{{ enemy.sigil }}</span><b>{{ enemy.name }}</b><small>{{ enemy.race }} • {{ enemy.maxHp }} HP</small>
+        </div>
+      </div>
+      <button class="enter" type="button" (click)="enterCurrent()">
+        <span *ngIf="['battle','elite','boss'].includes(current.type)">Entrar em combate</span>
+        <span *ngIf="current.type === 'event'">Entrar no evento</span>
+        <span *ngIf="current.type === 'rest'">Descansar</span>
+        <b>→</b>
+      </button>
+    </section>
+
+    <aside class="journey">
+      <small>JORNADA</small>
+      <div class="nodes">
+        <div class="path"></div>
+        <div class="map-node" *ngFor="let item of campaign" [attr.data-state]="nodeState(item)" [attr.data-type]="item.type">
+          <span>{{ item.index + 1 }}</span>
+          <div><b>{{ item.title }}</b><small>{{ item.region }}</small></div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="deck-modal" *ngIf="showDeck" (click)="showDeck = false">
+    <section (click)="$event.stopPropagation()">
+      <header><div><small>COLEÇÃO ATUAL</small><h2>Seu deck</h2></div><button type="button" (click)="showDeck = false">×</button></header>
+      <div class="deck-grid">
+        <app-card-view *ngFor="let instance of game.snapshot.deck" [card]="cardDef(instance)" [instance]="instance" [resolvedText]="game.getResolvedCardText(instance)" [compact]="true"></app-card-view>
+      </div>
+    </section>
+  </div>
+</main>

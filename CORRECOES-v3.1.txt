@@ -1,0 +1,33 @@
+ECLIPSE OF AELORIA - CORRECOES v3.1
+
+PRINCIPAIS CORRECOES
+- Turno do inimigo agora acontece visualmente, um inimigo por vez.
+- Encerrar turno não parece mais travado.
+- Recarregar a página durante a fase inimiga continua a batalha automaticamente.
+- Ataques com um único inimigo usam alvo automático.
+- Com múltiplos inimigos, a seleção de alvo fica explícita e pode ser cancelada.
+- ESC cancela seleção de alvo.
+- Cartas sem Energia mostram claramente SEM ENERGIA.
+- Clique em carta sem Energia informa o motivo em vez de parecer sem resposta.
+- Botão Encerrar Turno fica acima das cartas e não é bloqueado por hover/seleção.
+- Quando não existem jogadas, o botão muda para PASSAR TURNO.
+- Fase inimiga explica que o jogador não precisa clicar em nada.
+- Tutorial inicial do combate foi refeito em 4 passos.
+- Home reorganizada para caber em 100dvh e não cortar a Crônica.
+- Combate permanece sem scroll da página.
+
+REGRAS RAPIDAS
+1. Sua Energia renova no início da rodada.
+2. Jogue quantas cartas puder/quiser pagar.
+3. Ataques pedem alvo somente quando existem vários inimigos vivos.
+4. Quando terminar, clique em ENCERRAR TURNO / PASSAR TURNO.
+5. Os inimigos executam as intenções anunciadas.
+6. Uma nova mão é comprada automaticamente.
+
+RODAR
+npm install
+npm start
+
+Abra http://localhost:4200
+
+Phaser não é necessário nesta versão.

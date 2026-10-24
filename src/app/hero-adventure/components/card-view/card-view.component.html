@@ -1,0 +1,28 @@
+<button
+  class="game-card"
+  type="button"
+  [class.selected]="selected"
+  [class.disabled]="disabled"
+  [class.compact]="compact"
+  [class.upgraded]="instance?.upgraded"
+  [attr.data-rarity]="card.rarity"
+  [attr.data-faction]="card.faction"
+  (click)="onChoose()"
+>
+  <span class="energy">{{ card.cost }}</span>
+  <span class="rarity">{{ card.rarity }}</span>
+  <div class="art">
+    <span class="sigil">{{ card.icon }}</span>
+    <span class="shine"></span>
+  </div>
+  <div class="content">
+    <small>{{ card.subtitle }}</small>
+    <h3>{{ card.name }}<span *ngIf="instance?.upgraded">+</span></h3>
+    <p>{{ resolvedText || card.description }}</p>
+  </div>
+  <div class="disabled-reason" *ngIf="disabled">SEM ENERGIA</div>
+  <div class="footer">
+    <span>{{ card.type }}</span>
+    <span *ngIf="card.exhaust">EXAURE</span>
+  </div>
+</button>

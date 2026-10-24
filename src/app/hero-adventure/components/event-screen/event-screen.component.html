@@ -1,0 +1,30 @@
+<main class="event-screen" *ngIf="node as n" [style.--event-bg]="'url(' + n.background + ')'">
+  <div class="backdrop"></div>
+  <header><button type="button" routerLink="/campaign">← Mapa</button><div><small>{{ n.act }} • {{ n.region }}</small><h1>{{ n.title }}</h1></div><span>◈ {{ game.snapshot.gold }}</span></header>
+
+  <section class="event-content" *ngIf="n.type === 'event'">
+    <div class="sigil">✦</div><small>EVENTO DE CAMPANHA</small><h2>{{ n.subtitle }}</h2><p>{{ n.story }}</p>
+    <div class="choices">
+      <button type="button" *ngFor="let choice of n.choices" [disabled]="!canAfford(choice.cost)" (click)="choose(choice.id)">
+        <span>{{ choice.effect === 'heal' ? '✚' : choice.effect === 'gold' ? '◈' : choice.effect === 'card' ? '▤' : '♥' }}</span>
+        <small *ngIf="choice.cost">CUSTO: {{ choice.cost }} OURO</small>
+        <h3>{{ choice.label }}</h3><p>{{ choice.description }}</p>
+      </button>
+    </div>
+  </section>
+
+  <section class="event-content rest" *ngIf="n.type === 'rest' && !upgradeMode">
+    <div class="sigil">☽</div><small>POÇO DA LUA</small><h2>{{ n.subtitle }}</h2><p>{{ n.story }}</p>
+    <div class="choices two">
+      <button type="button" (click)="heal()"><span>✚</span><small>DESCANSAR</small><h3>Recuperar forças</h3><p>Recupere 35% da sua Vida Máxima.</p></button>
+      <button type="button" (click)="upgradeMode = true"><span>✧</span><small>FORJAR</small><h3>Melhorar uma carta</h3><p>Escolha uma carta do deck e transforme-a permanentemente em sua versão +.</p></button>
+    </div>
+  </section>
+
+  <section class="upgrade-panel" *ngIf="n.type === 'rest' && upgradeMode">
+    <header><div><small>FORJA DA LUA</small><h2>Escolha uma carta para melhorar</h2></div><button type="button" (click)="upgradeMode = false">Cancelar</button></header>
+    <div class="upgrade-grid">
+      <app-card-view *ngFor="let instance of upgradable()" [card]="cardDef(instance)" [instance]="instance" [resolvedText]="game.getResolvedCardText(instance)" [compact]="true" (choose)="upgrade(instance)"></app-card-view>
+    </div>
+  </section>
+</main>

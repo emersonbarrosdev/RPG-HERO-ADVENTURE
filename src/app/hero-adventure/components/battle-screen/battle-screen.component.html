@@ -1,0 +1,199 @@
+<main class="battle-screen" *ngIf="node && battle as b" [style.--battle-bg]="'url(' + node.background + ')'">
+  <div class="scene-bg"></div>
+
+  <header class="battle-topbar">
+    <div class="champion" *ngIf="game.hero as hero">
+      <span class="crest">{{ hero.crest }}</span>
+      <div class="identity">
+        <small>{{ hero.race }} • {{ hero.title }}</small>
+        <strong>{{ hero.name }}</strong>
+      </div>
+      <div class="hp-block">
+        <div class="hp-line"><span>VIDA</span><b>{{ game.snapshot.hp }} / {{ game.snapshot.maxHp }}</b></div>
+        <div class="bar"><span [style.width.%]="playerHpPercent()"></span></div>
+      </div>
+      <div class="block" *ngIf="b.block > 0">◆ {{ b.block }}</div>
+      <div class="statuses"><span *ngFor="let status of b.playerStatuses">{{ statusLabel(status) }}</span></div>
+    </div>
+
+    <div class="turn-info" [class.enemy-turn]="b.phase === 'enemy'">
+      <small>RODADA</small>
+      <b>{{ b.turn || 1 }}</b>
+      <span>{{ b.phase === 'player' ? 'SUA VEZ' : b.phase === 'enemy' ? 'VEZ DOS INIMIGOS' : node.act }}</span>
+    </div>
+
+    <div class="piles">
+      <button type="button" (click)="showDeck = true" title="Ver seu deck completo"><span>▤</span><b>{{ b.drawPile.length }}</b><small>Comprar</small></button>
+      <div><span>◫</span><b>{{ b.discardPile.length }}</b><small>Descarte</small></div>
+      <div><span>✕</span><b>{{ b.exhaustPile.length }}</b><small>Exílio</small></div>
+      <div class="gold"><span>◈</span><b>{{ game.snapshot.gold }}</b><small>Ouro</small></div>
+    </div>
+  </header>
+
+  <section class="battlefield">
+    <div class="encounter-head">
+      <div class="encounter-title">
+        <small>{{ node.act }} • {{ node.region }}</small>
+        <h1>{{ node.title }}</h1>
+      </div>
+      <div class="action-guide" [class.targeting]="selectedDefinition?.target === 'enemy'" [class.enemy]="b.phase === 'enemy'">
+        <span>{{ b.phase === 'enemy' ? '◆' : selectedDefinition?.target === 'enemy' ? '◎' : '✦' }}</span>
+        <p>{{ actionGuide }}</p>
+        <button type="button" *ngIf="selectedDefinition?.target === 'enemy'" (click)="cancelTarget()">Cancelar alvo</button>
+      </div>
+    </div>
+
+    <div class="enemies" [class.targeting]="selectedDefinition?.target === 'enemy'">
+      <button
+        class="enemy-card"
+        type="button"
+        *ngFor="let enemy of b.enemies"
+        [class.dead]="enemy.hp <= 0"
+        [class.valid-target]="selectedDefinition?.target === 'enemy' && enemy.hp > 0"
+        [class.acting]="isEnemyActing(enemy)"
+        (click)="targetEnemy(enemy)"
+      >
+        <div class="enemy-intent" *ngIf="enemy.hp > 0">
+          <span>{{ intentIcon(enemy.intent) }}</span>
+          <div>
+            <small>{{ isEnemyActing(enemy) ? 'AGINDO AGORA' : 'PRÓXIMA AÇÃO' }}</small>
+            <b>{{ enemy.intent.name }}</b>
+            <em>{{ intentText(enemy.intent) }}</em>
+          </div>
+        </div>
+
+        <div class="enemy-art"><span>{{ enemy.sigil }}</span></div>
+
+        <div class="enemy-info">
+          <small>{{ enemy.race }} • {{ enemy.title }}</small>
+          <h2>{{ enemy.name }}</h2>
+          <div class="enemy-health">
+            <span><b>{{ enemy.hp }}</b> / {{ enemy.maxHp }}</span>
+            <em *ngIf="enemy.block > 0">◆ {{ enemy.block }}</em>
+          </div>
+          <div class="bar"><span [style.width.%]="hpPercent(enemy)"></span></div>
+          <div class="enemy-statuses"><span *ngFor="let status of enemy.statuses">{{ statusLabel(status) }}</span></div>
+        </div>
+
+        <div class="target-hint" *ngIf="selectedDefinition?.target === 'enemy' && enemy.hp > 0">CLIQUE PARA ATACAR</div>
+        <div class="acting-hint" *ngIf="isEnemyActing(enemy)">EXECUTANDO AÇÃO…</div>
+      </button>
+    </div>
+
+    <div class="battle-log" aria-live="polite">
+      <span>CRÔNICA DO COMBATE</span>
+      <p *ngFor="let log of visibleLogs()">{{ log }}</p>
+    </div>
+  </section>
+
+  <section class="hand-zone" *ngIf="b.phase === 'player'">
+    <div class="energy-panel">
+      <div class="energy-orb"><span>✦</span><b>{{ b.energy }}</b><small>/ {{ b.maxEnergy }}</small></div>
+      <small>ENERGIA</small>
+      <p>Renova a cada rodada</p>
+    </div>
+
+    <div class="hand-wrap">
+      <div class="hand-label">
+        <span>SUA MÃO • {{ hand.length }} CARTAS</span>
+        <small *ngIf="playableCardsCount > 0">{{ playableCardsCount }} jogável{{ playableCardsCount === 1 ? '' : 'is' }} agora</small>
+        <small *ngIf="playableCardsCount === 0">Nenhuma carta pode ser jogada</small>
+      </div>
+      <div class="hand" [style.--hand-count]="hand.length">
+        <app-card-view
+          *ngFor="let instance of hand; let i = index"
+          [style.--i]="i"
+          [card]="cardDef(instance)"
+          [instance]="instance"
+          [resolvedText]="game.getResolvedCardText(instance)"
+          [selected]="b.selectedCardUid === instance.uid"
+          [disabled]="cardDisabled(instance)"
+          (choose)="selectOrPlay(instance)"
+        ></app-card-view>
+      </div>
+    </div>
+
+    <button class="end-turn" type="button" (click)="endTurn()">
+      <small>{{ playableCardsCount > 0 ? 'Quando terminar' : 'Sem jogadas' }}</small>
+      <span>{{ endTurnTitle }}</span>
+      <b>TURNO</b>
+      <em>→</em>
+    </button>
+  </section>
+
+  <section class="enemy-turn-zone" *ngIf="b.phase === 'enemy'">
+    <div class="enemy-turn-pulse">◆</div>
+    <div>
+      <small>VEZ DOS INIMIGOS</small>
+      <h3>{{ activeEnemyId ? 'Resolvendo a ação anunciada' : 'Preparando ações…' }}</h3>
+      <p>Você não precisa clicar em nada. Quando todos agirem, uma nova mão será comprada automaticamente.</p>
+    </div>
+  </section>
+
+  <div class="feedback-toast" *ngIf="feedback">{{ feedback }}</div>
+
+  <section class="phase-overlay intro" *ngIf="b.phase === 'intro'">
+    <div class="intro-card">
+      <small>{{ node.act }} • {{ node.region }}</small>
+      <h1>{{ node.title }}</h1>
+      <p class="subtitle">{{ node.subtitle }}</p>
+      <div class="divider"></div>
+      <p>{{ node.story }}</p>
+
+      <div class="how-to-play">
+        <div><b>1</b><span><strong>Jogue cartas</strong><small>O número no canto é o custo de Energia.</small></span></div>
+        <div><b>2</b><span><strong>Escolha o alvo</strong><small>Com vários inimigos, ataques pedem um alvo.</small></span></div>
+        <div><b>3</b><span><strong>Encerre o turno</strong><small>Os inimigos executam as ações mostradas acima deles.</small></span></div>
+        <div><b>4</b><span><strong>Nova rodada</strong><small>Energia renova e você compra uma nova mão.</small></span></div>
+      </div>
+
+      <button type="button" (click)="begin()">Entendi • Comprar primeira mão</button>
+    </div>
+  </section>
+
+  <section class="phase-overlay" *ngIf="b.phase === 'victory'">
+    <div class="result-card victory">
+      <span class="result-icon">✧</span>
+      <small>VITÓRIA</small>
+      <h2>{{ node.title }} concluído</h2>
+      <p>{{ node.afterVictory }}</p>
+      <div class="reward-summary">
+        <span *ngIf="node.goldReward">◈ +{{ node.goldReward }} ouro</span>
+        <span *ngIf="node.cardReward">▤ escolha de carta</span>
+        <span *ngIf="node.relicReward">✥ relíquia de chefe</span>
+      </div>
+      <button type="button" (click)="continueAfterVictory()">{{ game.snapshot.runWon ? 'Ver epílogo' : 'Escolher recompensa' }} →</button>
+    </div>
+  </section>
+
+  <section class="phase-overlay" *ngIf="b.phase === 'defeat'">
+    <div class="result-card defeat">
+      <span class="result-icon">☾</span>
+      <small>DERROTA</small>
+      <h2>O Véu ainda não venceu</h2>
+      <p>Observe as intenções antes de gastar sua Energia. Bloqueio protege apenas a rodada atual, então use-o quando um ataque estiver chegando.</p>
+      <div class="defeat-actions">
+        <button type="button" (click)="retry()">Tentar novamente</button>
+        <button type="button" routerLink="/campaign">Voltar ao mapa</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="deck-modal" *ngIf="showDeck" (click)="showDeck = false">
+    <section (click)="$event.stopPropagation()">
+      <header>
+        <div><small>SEU BARALHO</small><h2>{{ game.snapshot.deck.length }} cartas</h2></div>
+        <button type="button" (click)="showDeck = false">×</button>
+      </header>
+      <div class="deck-grid">
+        <app-card-view
+          *ngFor="let instance of deckInstances()"
+          [card]="cardDef(instance)"
+          [instance]="instance"
+          [resolvedText]="game.getResolvedCardText(instance)"
+          [compact]="true"
+        ></app-card-view>
+      </div>
+    </section>
+  </div>
+</main>

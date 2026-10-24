@@ -1,0 +1,35 @@
+<main class="reward-screen" *ngIf="reward as r">
+  <div class="backdrop"></div>
+  <header><span>✧</span><div><small>FIM DO ENCONTRO</small><h1>Escolha o que levar</h1></div><b>◈ +{{ r.gold }} ouro</b></header>
+
+  <section class="reward-content">
+    <div class="story"><span>CRÔNICA</span><p>{{ r.story }}</p></div>
+
+    <div class="step" *ngIf="!r.cardResolved">
+      <small>RECOMPENSA DE CARTA</small>
+      <h2>Escolha uma carta para o seu deck</h2>
+      <p>Ela entra permanentemente na sua pilha para os próximos encontros.</p>
+      <div class="card-choices">
+        <app-card-view *ngFor="let id of r.cardChoices" [card]="card(id)" [resolvedText]="card(id).description" (choose)="chooseCard(id)"></app-card-view>
+      </div>
+      <button class="skip" type="button" (click)="chooseCard(null)">Pular recompensa</button>
+    </div>
+
+    <div class="step" *ngIf="r.cardResolved && !r.relicResolved">
+      <small>RELÍQUIA DE CHEFE</small>
+      <h2>Escolha uma relíquia</h2>
+      <p>Relíquias alteram as regras da run e permanecem ativas em todos os combates.</p>
+      <div class="relic-choices">
+        <button type="button" *ngFor="let id of r.relicChoices" (click)="chooseRelic(id)">
+          <span>{{ relic(id)?.icon }}</span><small>{{ relic(id)?.origin }}</small><h3>{{ relic(id)?.name }}</h3><p>{{ relic(id)?.description }}</p>
+        </button>
+      </div>
+    </div>
+
+    <div class="step complete" *ngIf="r.cardResolved && r.relicResolved">
+      <span class="complete-icon">✥</span><small>RECOMPENSAS CONCLUÍDAS</small><h2>O caminho continua</h2>
+      <p>Seu deck foi atualizado e o progresso foi salvo automaticamente.</p>
+      <button class="continue" type="button" (click)="finish()">Voltar ao mapa →</button>
+    </div>
+  </section>
+</main>

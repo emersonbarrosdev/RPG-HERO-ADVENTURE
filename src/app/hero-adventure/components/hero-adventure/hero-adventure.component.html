@@ -1,0 +1,26 @@
+<main class="home-screen">
+  <div class="veil"></div>
+  <section class="hero-copy">
+    <div class="eyebrow"><span></span> RPG DE CARTAS • DECKBUILDER MEDIEVAL <span></span></div>
+    <h1>ECLIPSE <em>OF</em> AELORIA</h1>
+    <p class="lead">Cinco selos mantêm o Véu fechado. Quatro povos estão à beira da guerra. Construa seu deck, leia as intenções do inimigo e decida quem ficará de pé quando as duas luas se apagarem.</p>
+    <div class="features">
+      <span>30+ cartas</span>
+      <span>3 campeões</span>
+      <span>deck + descarte</span>
+      <span>chefes e relíquias</span>
+    </div>
+    <div class="actions">
+      <button class="primary" type="button" (click)="newGame()">Nova jornada</button>
+      <button class="ghost" type="button" *ngIf="game.hasSave" (click)="continueGame()">Continuar</button>
+    </div>
+  </section>
+  <aside class="lore-card">
+    <div class="crest">✧</div>
+    <small>CRÔNICA I</small>
+    <h2>O Coração Partido</h2>
+    <p>O artefato que separava Aeloria do Reino Cinzento foi dividido. Orcs marcham sobre Sylvarin, elfos sombrios abandonam o exílio e um antigo conselheiro recolhe os fragmentos sem jamais tocar neles.</p>
+    <div class="line"></div>
+    <strong>“Toda guerra precisa de uma primeira mentira.”</strong>
+  </aside>
+</main>

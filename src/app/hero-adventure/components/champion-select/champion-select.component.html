@@ -1,0 +1,24 @@
+<main class="select-screen">
+  <header>
+    <button class="back" type="button" routerLink="/">← Menu</button>
+    <div><small>ANTES DA PRIMEIRA CARTA</small><h1>Escolha seu campeão</h1></div>
+    <span class="step">01 / 03</span>
+  </header>
+
+  <section class="champions">
+    <button class="champion" type="button" *ngFor="let hero of heroes" [class.active]="selectedId === hero.id" (click)="choose(hero)">
+      <div class="crest">{{ hero.crest }}</div>
+      <small>{{ hero.race }}</small>
+      <h2>{{ hero.name }}</h2>
+      <p class="title">{{ hero.title }}</p>
+      <div class="stats"><span>♥ {{ hero.maxHp }}</span><span>✦ {{ hero.baseEnergy }} energia</span><span>▤ {{ hero.starterDeck.length }} cartas</span></div>
+      <div class="passive"><b>{{ hero.passiveName }}</b><span>{{ hero.passiveDescription }}</span></div>
+      <div class="mini-deck"><span *ngFor="let card of starterPreview(hero)">{{ card.icon }} {{ card.name }}</span></div>
+    </button>
+  </section>
+
+  <footer>
+    <p>O campeão define seu <strong>deck inicial e passiva</strong>. Cartas de outros povos podem entrar no deck conforme alianças forem formadas.</p>
+    <button class="continue" type="button" (click)="confirm()">Começar campanha →</button>
+  </footer>
+</main>
